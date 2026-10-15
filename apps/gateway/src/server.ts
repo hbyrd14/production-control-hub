@@ -95,6 +95,7 @@ export async function createGateway(
   await app.register(fastifyCookie);
 
   const loginLimiter = new RateLimiter(8, 5 * 60_000);
+  const ipLimiter = new RateLimiter(30, 5 * 60_000);
   const apiLimiter = new RateLimiter(300, 60_000);
 
   /* -------------------- origin / network guards -------------------- */
@@ -217,14 +218,18 @@ export async function createGateway(
   app.post('/api/auth/login', async (req, reply) => {
     const body = parse(Credentials, req.body, reply);
     if (!body) return;
+    // Only failed attempts count toward the limits (per user+address, and per address).
     const key = `${ip(req)}:${body.username.toLowerCase()}`;
-    if (!loginLimiter.take(key) || !loginLimiter.take(`ip:${ip(req)}`)) {
+    const ipKey = `ip:${ip(req)}`;
+    if (!loginLimiter.allowed(key) || !ipLimiter.allowed(ipKey)) {
       store.audit('auth.rate_limited', null, { username: body.username }, ip(req));
       return reply.code(429).send({ error: 'Too many sign-in attempts. Wait a few minutes.' });
     }
     const user = store.findUserByName(body.username);
     const ok = verifyPassword(body.password, user?.password_hash ?? DUMMY_HASH) && !!user && !user.disabled;
     if (!ok || !user) {
+      loginLimiter.take(key);
+      ipLimiter.take(ipKey);
       store.audit('auth.login_failed', null, { username: body.username }, ip(req));
       return reply.code(401).send({ error: 'Incorrect username or password' });
     }

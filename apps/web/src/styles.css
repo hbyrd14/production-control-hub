@@ -1108,3 +1108,8 @@ table {
 .inspector .row input {
   width: 100%;
 }
+
+.banner-action {
+  margin-left: 12px;
+  color: var(--text);
+}

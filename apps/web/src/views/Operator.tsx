@@ -4,6 +4,7 @@ import { Key } from '../components/Key';
 import { KeyGrid } from '../components/KeyGrid';
 import { StatusLamp } from '../components/StatusLamp';
 import { gatewaySocket } from '../lib/socket';
+import { api, errorMessage } from '../lib/api';
 import { canPress, isAdmin, useApp } from '../lib/store';
 import { getPrefs, usePrefs, useWakeLock } from '../lib/prefs';
 
@@ -131,6 +132,16 @@ export function Operator() {
             : companion?.state === 'disabled'
               ? 'Companion is not configured. Set the connection in Settings.'
               : `Companion is offline${companion?.lastError ? ` (${companion.lastError})` : ''}. Keys are disabled; nothing will be sent until it reconnects.`}
+          {online && companion?.state === 'backoff' && canPress(user) && (
+            <button
+              type="button"
+              className="btn-small banner-action"
+              data-testid="retry-companion"
+              onClick={() => api('POST', '/api/companion/reconnect').catch((e) => toast('error', errorMessage(e)))}
+            >
+              Retry now
+            </button>
+          )}
         </div>
       )}
 

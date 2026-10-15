@@ -72,6 +72,8 @@ export class MockCompanionServer extends EventEmitter<{ press: [MockPressEvent];
   readonly received: string[] = [];
   /** When true, the server stops answering PINGs (simulates a hung peer). */
   silent = false;
+  /** When true, new connections are refused (simulates Companion being down / unreachable). */
+  refuseConnections = false;
 
   private tcp: net.Server | null = null;
   private wss: WebSocketServer | null = null;
@@ -165,6 +167,10 @@ export class MockCompanionServer extends EventEmitter<{ press: [MockPressEvent];
   /* ------------------------------------------------------------------ */
 
   private acceptTcp(socket: net.Socket): void {
+    if (this.refuseConnections) {
+      socket.destroy();
+      return;
+    }
     socket.setEncoding('utf8');
     socket.setNoDelay(true);
     const lb = new LineBuffer();
@@ -187,6 +193,10 @@ export class MockCompanionServer extends EventEmitter<{ press: [MockPressEvent];
   }
 
   private acceptWs(ws: WebSocket): void {
+    if (this.refuseConnections) {
+      ws.terminate();
+      return;
+    }
     const conn: Conn = {
       id: this.nextConnId++,
       send: (l) => {

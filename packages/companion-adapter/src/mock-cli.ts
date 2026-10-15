@@ -9,6 +9,8 @@
  *   POST /drop          drop every Satellite connection
  *   POST /stop-pong     stop answering PINGs (simulate hung Companion)
  *   POST /resume-pong
+ *   POST /down          refuse connections and drop existing ones (Companion unreachable)
+ *   POST /up            accept connections again
  *   POST /reset         clear log and simulated tally state
  */
 import http from 'node:http';
@@ -52,6 +54,15 @@ http
     }
     if (req.method === 'POST' && req.url === '/resume-pong') {
       server.silent = false;
+      return json({ ok: true });
+    }
+    if (req.method === 'POST' && req.url === '/down') {
+      server.refuseConnections = true;
+      server.dropAll();
+      return json({ ok: true });
+    }
+    if (req.method === 'POST' && req.url === '/up') {
+      server.refuseConnections = false;
       return json({ ok: true });
     }
     if (req.method === 'POST' && req.url === '/reset') {

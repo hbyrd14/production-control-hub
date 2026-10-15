@@ -60,6 +60,12 @@ export class RateLimiter {
     return true;
   }
 
+  /** True if another hit would be allowed (does not record). */
+  allowed(key: string): boolean {
+    const t = this.now();
+    return (this.hits.get(key) ?? []).filter((x) => t - x < this.windowMs).length < this.limit;
+  }
+
   reset(key: string): void {
     this.hits.delete(key);
   }
