@@ -13,7 +13,7 @@
     "dev": "node scripts/dev.mjs",
     "dev:mock": "node scripts/dev.mjs --mock",
     "mock:companion": "tsx packages/companion-adapter/src/mock-cli.ts",
-    "build": "pnpm -r --filter ./apps/* run build",
+    "build": "pnpm --filter @pch/web --filter @pch/gateway run build",
     "start": "node --disable-warning=ExperimentalWarning apps/gateway/dist/index.js",
     "typecheck": "pnpm -r run typecheck",
     "lint": "eslint .",
