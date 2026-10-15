@@ -14,6 +14,7 @@ Run date: 2026-10-15. Environment: Linux, Node.js 22.22.0, pnpm 10.28.0, Playwri
 | Dependency audit | `pnpm audit --prod` | No known vulnerabilities (after upgrading `@fastify/static` to 10.1.6, which fixed 4 advisories) |
 | HTTPS / WSS | manual: `scripts/gen-cert.sh`, gateway with TLS, `curl --cacert`, `wss://` client | Pass — health, login cookie, CSP headers, WebSocket welcome/status over TLS |
 | Static file safety | manual: encoded `../` paths against the built gateway | Traversal attempts return the app shell, never files outside the web build |
+| Clean-room install | fresh extract of the release archive → `scripts/setup.sh` → lint, typecheck, 85 tests, 18 e2e → `scripts/start.sh` | Pass (this run caught and fixed a `pnpm build` script that silently skipped the build) |
 | Dev launcher | manual: `pnpm dev:mock`, first-run setup code flow through the Vite proxy in Chromium | Pass |
 
 ### Coverage of required test areas
