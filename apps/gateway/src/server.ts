@@ -478,8 +478,8 @@ export async function createGateway(
       wildcard: false,
       setHeaders: (res, filePath) => {
         const base = path.basename(filePath);
-        if (base === 'index.html' || base === 'sw.js' || base.endsWith('.webmanifest')) res.setHeader('Cache-Control', 'no-cache');
-        else if (filePath.includes(`${path.sep}assets${path.sep}`)) res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        if (base === 'index.html' || base === 'sw.js' || base.endsWith('.webmanifest')) res.header('Cache-Control', 'no-cache');
+        else if (filePath.includes(`${path.sep}assets${path.sep}`)) res.header('Cache-Control', 'public, max-age=31536000, immutable');
       },
     });
     app.get('/*', async (req, reply) => {

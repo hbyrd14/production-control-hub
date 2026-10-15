@@ -17,7 +17,7 @@ const DEFAULT_COMPANION: CompanionSettings = {
   enabled: true,
 };
 
-type Section = 'companion' | 'diagnostics' | 'gateway' | 'device' | 'account' | 'users' | 'audit';
+type Section = 'companion' | 'diagnostics' | 'gateway' | 'backup' | 'device' | 'account' | 'users' | 'audit';
 
 export function Settings() {
   const user = useApp((s) => s.user);
@@ -28,6 +28,7 @@ export function Settings() {
     ['companion', 'Companion connection', true],
     ['diagnostics', 'Diagnostics', true],
     ['gateway', 'Gateway', admin],
+    ['backup', 'Profile backups', true],
     ['device', 'This device', true],
     ['account', 'Account', true],
     ['users', 'Operators', admin],
@@ -59,6 +60,7 @@ export function Settings() {
           {section === 'companion' && <CompanionSection admin={admin} />}
           {section === 'diagnostics' && <Diagnostics admin={admin} />}
           {section === 'gateway' && admin && <GatewaySection />}
+          {section === 'backup' && <BackupSection admin={admin} />}
           {section === 'device' && <DeviceSection />}
           {section === 'account' && <AccountSection />}
           {section === 'users' && admin && <UsersSection />}
@@ -383,6 +385,45 @@ function GatewaySection() {
           ))}
         </select>
       </label>
+    </div>
+  );
+}
+
+function BackupSection({ admin }: { admin: boolean }) {
+  const { data } = useAsync(() => api<Profile[]>('GET', '/api/profiles'));
+  const version = useApp((s) => s.version);
+  return (
+    <div className="form">
+      <h2>Profile backups</h2>
+      <p className="muted">
+        Each profile exports as a file that can be imported on any Production Control Hub{admin ? ' (Edit → Profile → Import from file)' : ''}. The whole database
+        lives in the gateway's data folder; copy that folder while the gateway is stopped for a full backup.
+      </p>
+      <table className="list">
+        <thead>
+          <tr>
+            <th>Profile</th>
+            <th>Type</th>
+            <th>Revision</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {data?.map((p) => (
+            <tr key={p.id}>
+              <td>{p.name}</td>
+              <td>{p.kind === 'surface' ? 'Companion surface' : 'Mapped'}</td>
+              <td>{p.revision}</td>
+              <td>
+                <a href={`/api/profiles/${p.id}/export`} download>
+                  Export
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="hint">Production Control Hub {version}</p>
     </div>
   );
 }

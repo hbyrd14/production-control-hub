@@ -1,9 +1,12 @@
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { loadConfig, loadDotEnv } from './config.js';
 import { createLogger } from './logger.js';
 import { createGateway } from './server.js';
 
+// .env in the working directory, then the repository root (same depth from src/ and dist/).
 loadDotEnv(path.resolve(process.cwd(), '.env'));
+loadDotEnv(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../.env'));
 
 const config = loadConfig();
 const log = createLogger(config.logLevel);
