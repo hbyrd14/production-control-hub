@@ -1,0 +1,39 @@
+{
+  "name": "production-control-hub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser-based 32-key production control surface powered by Bitfocus Companion",
+  "license": "MIT",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:mock": "node scripts/dev.mjs --mock",
+    "mock:companion": "tsx packages/companion-adapter/src/mock-cli.ts",
+    "build": "pnpm -r --filter ./apps/* run build",
+    "start": "node apps/gateway/dist/index.js",
+    "typecheck": "pnpm -r run typecheck",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "icons": "tsx scripts/generate-icons.ts",
+    "admin:reset-password": "tsx apps/gateway/src/cli/reset-password.ts",
+    "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@playwright/test": "1.56.1",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.14.0",
+    "tsx": "^4.19.2",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.18.0",
+    "vitest": "^3.0.0"
+  }
+}
