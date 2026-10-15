@@ -14,7 +14,7 @@
     "dev:mock": "node scripts/dev.mjs --mock",
     "mock:companion": "tsx packages/companion-adapter/src/mock-cli.ts",
     "build": "pnpm -r --filter ./apps/* run build",
-    "start": "node apps/gateway/dist/index.js",
+    "start": "node --disable-warning=ExperimentalWarning apps/gateway/dist/index.js",
     "typecheck": "pnpm -r run typecheck",
     "lint": "eslint .",
     "test": "vitest run",

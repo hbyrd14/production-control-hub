@@ -357,6 +357,7 @@ export class Hub {
       style: null,
       kind: 'empty',
       mode: null,
+      holdMs: null,
       navAction: null,
       companionType: null,
       disabledReason: null,
@@ -394,7 +395,7 @@ export class Hub {
 
     // Companion-mapped key
     const subId = subIdFor(slot.location);
-    const v: KeyView = { ...base, kind: 'companion', mode: slot.mode, location: locationKey(slot.location), style: slot.style };
+    const v: KeyView = { ...base, kind: 'companion', mode: slot.mode, holdMs: slot.mode === 'hold' ? slot.holdMs : null, location: locationKey(slot.location), style: slot.style };
     const st = this.subStates.get(subId);
     if (st) Object.assign(v, fromCompanion(st), { stale: this.stale });
     else v.source = slot.presentation === 'pch' ? 'pch' : 'unavailable';

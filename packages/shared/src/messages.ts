@@ -64,6 +64,8 @@ export interface KeyView {
   style: KeyStyle | null;
   kind: 'empty' | 'companion' | 'nav' | 'surface';
   mode: InteractionMode | null;
+  /** For hold-mode keys: how long the operator must hold */
+  holdMs: number | null;
   navAction: string | null;
   companionType: 'BUTTON' | 'PAGEUP' | 'PAGEDOWN' | 'PAGENUM' | null;
   /** If set, the key cannot be operated and this explains why */

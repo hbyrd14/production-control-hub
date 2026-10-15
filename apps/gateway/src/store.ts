@@ -1,7 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { DatabaseSync } from 'node:sqlite';
+import type { DatabaseSync as DatabaseSyncType } from 'node:sqlite';
+
+// Loaded at runtime so bundlers cannot rewrite the "node:" specifier (node:sqlite has no unprefixed form).
+const { DatabaseSync } = process.getBuiltinModule('node:sqlite') as typeof import('node:sqlite');
 import {
   CompanionSettingsSchema,
   GatewaySettingsSchema,
@@ -99,7 +102,7 @@ export class ConflictError extends Error {
 }
 
 export class Store {
-  readonly db: DatabaseSync;
+  readonly db: DatabaseSyncType;
 
   constructor(dbPath: string) {
     if (dbPath !== ':memory:') fs.mkdirSync(path.dirname(dbPath), { recursive: true });
