@@ -72,6 +72,8 @@ export class MockCompanionServer extends EventEmitter<{ press: [MockPressEvent];
   readonly received: string[] = [];
   /** When true, the server stops answering PINGs (simulates a hung peer). */
   silent = false;
+  /** Mirrors Companion's "satellite subscriptions enabled" user setting (CAPS SUBSCRIPTIONS). */
+  subscriptionsEnabled = true;
   /** When true, new connections are refused (simulates Companion being down / unreachable). */
   refuseConnections = false;
 
@@ -218,7 +220,7 @@ export class MockCompanionServer extends EventEmitter<{ press: [MockPressEvent];
   private greet(conn: Conn): void {
     conn.send(formatCommand('BEGIN', { CompanionVersion: this.companionVersion, ApiVersion: this.apiVersion }));
     if (versionAtLeast(this.apiVersion, '1.10.0')) {
-      const caps: Record<string, ArgValue> = { SUBSCRIPTIONS: true, NONSQUARE: true };
+      const caps: Record<string, ArgValue> = { SUBSCRIPTIONS: this.subscriptionsEnabled ? 1 : 0, NONSQUARE: true };
       if (versionAtLeast(this.apiVersion, '1.12.0')) caps.BITMAP_FORMATS = this.png ? 'rgb,png' : 'rgb';
       conn.send(formatCommand('CAPS', caps));
     }
@@ -294,6 +296,7 @@ export class MockCompanionServer extends EventEmitter<{ press: [MockPressEvent];
         return;
       }
       case 'ADD-SUB': {
+        if (!this.subscriptionsEnabled) return this.reply(conn, 'ADD-SUB', false, { SUBID: a.SUBID, MESSAGE: 'Subscriptions are disabled' });
         if (!supportsSubs) return conn.send(formatCommand('ERROR', { MESSAGE: 'Unknown command: ADD-SUB' }));
         if (!a.SUBID) return this.reply(conn, 'ADD-SUB', false, { MESSAGE: 'Missing SUBID' });
         const sub: SubInfo = {

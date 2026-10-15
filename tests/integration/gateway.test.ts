@@ -231,6 +231,18 @@ describe('network interruption safety', () => {
     await waitFor(() => c.feedback(0).some((f) => f.state === 'rejected'));
     expect(stack.mock.events).toHaveLength(0);
   });
+
+  it('explains when Companion has button subscriptions turned off', async () => {
+    stack = await startStack();
+    stack.mock.subscriptionsEnabled = false;
+    stack.mock.dropAll(); // Companion closes connections when the setting changes
+    const c = await client(await login(stack.base));
+    await waitFor(() => c.status?.state === 'connected' && c.keys[0]?.source === 'unavailable', 5000, 'unavailable mapped key');
+    expect(c.keys[0]!.disabledReason).toMatch(/Turn on button subscriptions/);
+    c.down(0);
+    await waitFor(() => c.feedback(0).some((f) => f.state === 'rejected' && /subscriptions/.test(f.message ?? '')));
+    expect(stack.mock.events).toHaveLength(0);
+  });
 });
 
 describe('surface profile', () => {

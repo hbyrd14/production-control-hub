@@ -1,4 +1,4 @@
-import type { CompanionKeyState } from '@pch/companion-adapter';
+import { versionAtLeast, type CompanionKeyState } from '@pch/companion-adapter';
 import {
   ClientMessageSchema,
   KEY_COUNT,
@@ -409,7 +409,9 @@ export class Hub {
         v.disabledReason = null;
       } else {
         v.source = 'unavailable';
-        v.disabledReason = 'Mapped keys need Companion Satellite API 1.10+ (or enable the HTTP fallback)';
+        v.disabledReason = versionAtLeast(this.companion.adapter.getConnectionState().apiVersion, '1.10.0')
+          ? "Turn on button subscriptions in Companion's Satellite settings"
+          : 'Mapped keys need Companion Satellite API 1.10+ (or enable the HTTP fallback)';
       }
     } else if (!st) {
       v.disabledReason = 'Waiting for Companion';
@@ -526,7 +528,7 @@ export class Hub {
 
     if (!this.companion.adapter.isConnected()) return this.reject(c, index, 'Companion offline — command not sent');
     const useSubs = this.companion.adapter.supportsSubscriptions();
-    if (!useSubs && !this.companion.canUseHttpFallback()) return this.reject(c, index, 'Companion does not support mapped keys');
+    if (!useSubs && !this.companion.canUseHttpFallback()) return this.reject(c, index, this.keyView(c, index).disabledReason ?? 'Companion does not support mapped keys');
     const toTarget = (l: CompanionLocation): Target =>
       useSubs ? { kind: 'sub', subId: subIdFor(l), location: locationKey(l) } : { kind: 'http', location: locationKey(l) };
     const cfg: KeyConfig = {

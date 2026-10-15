@@ -54,6 +54,10 @@ The gateway displays the Companion version and Satellite API version it negotiat
 
 **Not yet verified against a real Companion instance.** The mock follows the published specification; real-world differences (for example exact `ADD-DEVICE OK` arguments, or how a given Companion release renders `CAN_CHANGE_PAGE`) must be confirmed in hardware validation.
 
+## Findings from real Companion (5.1.0, Satellite API 1.14.0)
+
+- Companion advertises `CAPS SUBSCRIPTIONS` only when the user setting `satellite_subscriptions_enabled` is on (source: `companion/lib/Service/Satellite/SatelliteApi.ts`). It is off by default, so mapped profiles need it switched on in Companion's Satellite settings. Toggling it makes Companion close all Satellite connections; PCH reconnects automatically. PCH now names this setting instead of reporting an API-version problem.
+
 ## Gaps in the documentation and how PCH handles them
 
 - `ADD-DEVICE OK` arguments are not specified → the adapter accepts OK with or without `DEVICEID`.

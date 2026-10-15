@@ -147,6 +147,7 @@ If the iPad sleeps or Wi-Fi drops, the surface shows a red banner and disables k
 | Signed in but immediately signed out on iPad | Using HTTPS with an untrusted cert, or mixing `http` and `https` URLs. Install the CA with full trust. |
 | Companion lamp red, "No BEGIN received" | Wrong port (e.g. Companion's web UI 8000 instead of 16622), or Satellite listener disabled in Companion settings |
 | Companion lamp red, "ECONNREFUSED" / timeout | Companion not running, wrong IP, firewall on Computer A blocking 16622/16623 |
+| Mapped keys say "Turn on button subscriptions…" | Companion supports them but the setting is off: enable button subscriptions in Companion's Settings → Satellite |
 | Mapped keys say "need Satellite API 1.10+" | Upgrade Companion, use a Companion surface profile, or configure the HTTP fallback port |
 | Surface navigation bar buttons disabled | Satellite API < 1.10, or page changes not allowed: in Companion, open the `pch-…` surface's settings and enable the PCH page-change option |
 | Keys show "stale" | Companion link dropped; images are from before the drop. Keys are disabled until fresh state arrives. |

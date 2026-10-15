@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 — 2026-10-15
+
+### Fixed
+- Mapped keys on Companion 5.x reported "need Satellite API 1.10+" when the real cause is Companion's button-subscriptions setting being off. PCH now says to enable it, and Settings shows the same hint.
+
 ## 0.1.0 — 2026-10-15
 
 First complete build, ready for controlled hardware testing.

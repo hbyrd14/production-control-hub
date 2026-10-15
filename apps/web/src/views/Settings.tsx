@@ -208,13 +208,26 @@ function CompanionSection({ admin }: { admin: boolean }) {
   );
 }
 
+function apiAtLeast110(v: string | null): boolean {
+  if (!v) return false;
+  const [maj = 0, min = 0] = v.split('.').map(Number);
+  return maj > 1 || (maj === 1 && min >= 10);
+}
+
 function StatusTable({ status }: { status: CompanionStatus }) {
   const rows: [string, string][] = [
     ['State', status.state],
     ['Address', status.host ? `${status.transport} ${status.host}:${status.port}` : '—'],
     ['Companion version', status.companionVersion ?? '—'],
     ['Satellite API', status.apiVersion ?? '—'],
-    ['Mapped keys (subscriptions)', status.supportsSubscriptions ? 'Supported' : 'Not available'],
+    [
+      'Mapped keys (subscriptions)',
+      status.supportsSubscriptions
+        ? 'Available'
+        : status.state === 'connected' && apiAtLeast110(status.apiVersion)
+          ? "Off in Companion — enable button subscriptions in Companion's Settings → Satellite"
+          : 'Not available (needs Satellite API 1.10+)',
+    ],
     ['Page change from PCH', status.supportsPageChange ? 'Supported (enable it on the surface in Companion)' : 'Not available'],
     ['Capabilities', status.capabilities.join(', ') || '—'],
     ['Last error', status.lastError ?? '—'],
