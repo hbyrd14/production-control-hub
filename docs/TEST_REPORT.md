@@ -53,7 +53,16 @@ Run date: 2026-10-15. Environment: Linux, Node.js 22.22.0, pnpm 10.28.0, Playwri
 | 11 | Network interruption triggers no unintended commands | **Met** (adapter, integration, e2e) |
 | 12 | Automated tests pass | **Met** (85 + 18) |
 | 13 | Runs without cloud hosting | **Met** (no external requests; fonts bundled) |
-| 14 | ATEM/vMix actions through configured Companion buttons | Demonstrated with simulated ATEM/vMix pages in the mock; **real hardware validation pending** |
+| 14 | ATEM/vMix actions through configured Companion buttons | **ATEM: user-confirmed working** with an ATEM Television Studio via Companion 5.1.0 (2026-10-16). vMix: pending |
+
+## Field validation log
+
+| Date | Setup | Result | Reported by |
+| --- | --- | --- | --- |
+| 2026-10-15 | Companion 5.1.0, Satellite API 1.14.0, Windows | Connected. Found that Companion's button-subscriptions setting is off by default; fixed PCH's message (0.1.1) | User |
+| 2026-10-16 | PCH 0.1.1 → Companion 5.1.0 → Blackmagic ATEM Television Studio | Works | User |
+
+Checklist items not yet reported: drop/reconnect safety on real gear, two-operator test, iPadOS Safari, vMix.
 
 ## Readiness verdict
 
