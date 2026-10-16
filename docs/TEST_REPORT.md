@@ -47,13 +47,13 @@ Run date: 2026-10-15. Environment: Linux, Node.js 22.22.0, pnpm 10.28.0, Playwri
 | 5 | Release sends correct release event | **Met** |
 | 6 | Companion images and feedback appear | **Met with mock** (PNG and raw-RGB paths) |
 | 7 | States update without refresh | **Met** (e2e image changes after press; cross-client tally) |
-| 8 | Works in desktop browsers and iPad Safari | Desktop Chromium **met**. iPad: Chromium touch emulation at iPad size **passes**, but **iPadOS Safari has not been tested** (WebKit unavailable in the build environment) |
+| 8 | Works in desktop browsers and iPad Safari | Desktop Chromium **met**. **iPad: user-confirmed working** on a wired iPad over the LAN (2026-10-16); detailed iPad checks (multi-touch, long-press, backgrounding) not yet reported |
 | 9 | Pages and profiles selectable and persisted | **Met** |
 | 10 | Multiple clients without corrupting state | **Met** |
 | 11 | Network interruption triggers no unintended commands | **Met** (adapter, integration, e2e) |
 | 12 | Automated tests pass | **Met** (85 + 18) |
 | 13 | Runs without cloud hosting | **Met** (no external requests; fonts bundled) |
-| 14 | ATEM/vMix actions through configured Companion buttons | **ATEM: user-confirmed working** with an ATEM Television Studio via Companion 5.1.0 (2026-10-16). vMix: pending |
+| 14 | ATEM/vMix actions through configured Companion buttons | **Met (user-confirmed)**: ATEM Television Studio and vMix on a separate computer, controlled together from the iPad via Companion 5.1.0 (2026-10-16) |
 
 ## Field validation log
 
@@ -61,8 +61,9 @@ Run date: 2026-10-15. Environment: Linux, Node.js 22.22.0, pnpm 10.28.0, Playwri
 | --- | --- | --- | --- |
 | 2026-10-15 | Companion 5.1.0, Satellite API 1.14.0, Windows | Connected. Found that Companion's button-subscriptions setting is off by default; fixed PCH's message (0.1.1) | User |
 | 2026-10-16 | PCH 0.1.1 → Companion 5.1.0 → Blackmagic ATEM Television Studio | Works | User |
+| 2026-10-16 | Wired iPad (Safari) → PCH gateway on LAN → Companion 5.1.0 → ATEM Television Studio + vMix on a second computer | Both controlled simultaneously from the iPad | User |
 
-Checklist items not yet reported: drop/reconnect safety on real gear, two-operator test, iPadOS Safari, vMix.
+Checklist items not yet reported: drop/reconnect safety on real gear, two-operator test, iPad gesture checks (multi-touch, long-press, backgrounding), hold-to-fire on real stream/record.
 
 ## Readiness verdict
 
