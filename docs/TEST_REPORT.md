@@ -42,7 +42,7 @@ Run date: 2026-10-15. Environment: Linux, Node.js 22.22.0, pnpm 10.28.0, Playwri
 | --- | --- | --- |
 | 1 | Starts using documented instructions | **Met** (setup/start scripts and dev launcher exercised on Linux; Windows/macOS scripts written, CI matrix configured, not run here) |
 | 2 | 32 virtual buttons in an 8 × 4 grid | **Met** (e2e) |
-| 3 | Gateway connects to Companion on another LAN computer | **Met**: real Companion 5.1.0 over TCP (Companion on the gateway computer; vMix on a second computer) |
+| 3 | Gateway connects to Companion on another LAN computer | **Met**: real Companion 5.1.0 over the LAN, with vMix on a second computer |
 | 4 | Press sends correct Companion press event | **Met** (byte-exact `KEY-PRESS` / `SUB-PRESS` verified) |
 | 5 | Release sends correct release event | **Met** |
 | 6 | Companion images and feedback appear | **Met with mock** (PNG and raw-RGB paths) |
