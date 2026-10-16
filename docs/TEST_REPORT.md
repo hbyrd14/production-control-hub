@@ -42,15 +42,15 @@ Run date: 2026-10-15. Environment: Linux, Node.js 22.22.0, pnpm 10.28.0, Playwri
 | --- | --- | --- |
 | 1 | Starts using documented instructions | **Met** (setup/start scripts and dev launcher exercised on Linux; Windows/macOS scripts written, CI matrix configured, not run here) |
 | 2 | 32 virtual buttons in an 8 × 4 grid | **Met** (e2e) |
-| 3 | Gateway connects to Companion on another LAN computer | **Met against mock over TCP/WS sockets**; real Companion on a second computer **pending hardware validation** |
+| 3 | Gateway connects to Companion on another LAN computer | **Met**: real Companion 5.1.0 over TCP (Companion on the gateway computer; vMix on a second computer) |
 | 4 | Press sends correct Companion press event | **Met** (byte-exact `KEY-PRESS` / `SUB-PRESS` verified) |
 | 5 | Release sends correct release event | **Met** |
 | 6 | Companion images and feedback appear | **Met with mock** (PNG and raw-RGB paths) |
 | 7 | States update without refresh | **Met** (e2e image changes after press; cross-client tally) |
-| 8 | Works in desktop browsers and iPad Safari | Desktop Chromium **met**. **iPad: user-confirmed working** on a wired iPad over the LAN (2026-10-16); detailed iPad checks (multi-touch, long-press, backgrounding) not yet reported |
+| 8 | Works in desktop browsers and iPad Safari | **Met**: desktop Chromium (automated) and iPad Safari (user-validated, including gestures and backgrounding) |
 | 9 | Pages and profiles selectable and persisted | **Met** |
 | 10 | Multiple clients without corrupting state | **Met** |
-| 11 | Network interruption triggers no unintended commands | **Met** (adapter, integration, e2e) |
+| 11 | Network interruption triggers no unintended commands | **Met** (adapter, integration, e2e, and on real ATEM/vMix) |
 | 12 | Automated tests pass | **Met** (85 + 18) |
 | 13 | Runs without cloud hosting | **Met** (no external requests; fonts bundled) |
 | 14 | ATEM/vMix actions through configured Companion buttons | **Met (user-confirmed)**: ATEM Television Studio and vMix on a separate computer, controlled together from the iPad via Companion 5.1.0 (2026-10-16) |
@@ -63,11 +63,13 @@ Run date: 2026-10-15. Environment: Linux, Node.js 22.22.0, pnpm 10.28.0, Playwri
 | 2026-10-16 | PCH 0.1.1 → Companion 5.1.0 → Blackmagic ATEM Television Studio | Works | User |
 | 2026-10-16 | Wired iPad (Safari) → PCH gateway on LAN → Companion 5.1.0 → ATEM Television Studio + vMix on a second computer | Both controlled simultaneously from the iPad | User |
 
-Checklist items not yet reported: drop/reconnect safety on real gear, two-operator test, iPad gesture checks (multi-touch, long-press, backgrounding), hold-to-fire on real stream/record.
+| 2026-10-16 | Same setup | Full checklist passed: network drop/reconnect with a held key (no unintended commands), iPad multi-touch, long-press and backgrounding, hold-to-fire on stream/record, second operator and viewer account | User |
 
 ## Readiness verdict
 
-**Ready for controlled hardware testing** (bench or rehearsal, not yet a live show). Everything that can be verified without Companion, hardware or Apple devices has been verified. The three open items are external validations, not missing features.
+**Show-ready for the validated setup** (2026-10-16): PCH 0.1.1, Companion 5.1.0, Blackmagic ATEM Television Studio, vMix on a separate computer, wired iPad (Safari, Home Screen app) plus Windows PC. All automated tests pass and the full hardware validation checklist was completed successfully by the user.
+
+Re-run the checklist after changing any of: PCH version, Companion version, switcher/vMix model, network layout, or iPadOS major version.
 
 ## Hardware validation checklist
 
@@ -84,7 +86,6 @@ Run on the bench before first rehearsal. Record Companion version and Satellite 
 
 ## Known limitations
 
-- Not yet validated against a real Companion, real ATEM/vMix, or iPadOS Safari (see checklist).
 - Companion's `LOCKED-STATE` (PIN lock) is received but not yet shown in the UI; keys simply stop updating while Companion is locked.
 - All browsers on one surface profile share one Companion surface (and its page). Use separate surface profiles for independent pages.
 - Mapped profiles need Satellite API 1.10+; the HTTP fallback can press but cannot show images, and Companion's HTTP API authentication (if enabled) is not supported.

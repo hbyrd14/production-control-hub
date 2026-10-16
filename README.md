@@ -65,6 +65,6 @@ Then open `http(s)://<gateway-address>:8420` from any device on the production L
 
 ## Status
 
-Version 0.1.0 is **ready for controlled hardware testing**. It has been verified against a protocol-accurate mock Companion and in Chromium (desktop and iPad-sized touch emulation). It has **not yet** been validated against a real Companion instance, real ATEM/vMix hardware, or iPadOS Safari — see [docs/TEST_REPORT.md](docs/TEST_REPORT.md) for the validation checklist.
+Version 0.1.1 is **show-ready for the validated setup**: Companion 5.1.0 controlling a Blackmagic ATEM Television Studio and vMix, operated from an iPad and a Windows PC. Automated tests pass and the hardware validation checklist was completed on real gear — see [docs/TEST_REPORT.md](docs/TEST_REPORT.md). Re-run the checklist when any part of that setup changes.
 
 Production Control Hub is an independent project. It is not affiliated with Elgato or Bitfocus and uses no Elgato software, branding or artwork.
