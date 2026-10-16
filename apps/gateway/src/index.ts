@@ -32,3 +32,6 @@ const shutdown = async (signal: string) => {
 };
 process.on('SIGINT', () => void shutdown('SIGINT'));
 process.on('SIGTERM', () => void shutdown('SIGTERM'));
+// Windows: closing the console window raises SIGHUP; Ctrl+Break raises SIGBREAK.
+process.on('SIGHUP', () => void shutdown('SIGHUP'));
+if (process.platform === 'win32') process.on('SIGBREAK', () => void shutdown('SIGBREAK'));

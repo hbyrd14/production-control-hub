@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2 — 2026-10-16
+
+### Added
+- Windows double-click launchers: "Start Production Control Hub.cmd" and "Update Production Control Hub.cmd" — no PowerShell needed.
+- Closing the gateway's console window now shuts down gracefully (releases held keys) via SIGHUP/SIGBREAK.
+
 ## 0.1.1 — 2026-10-15
 
 ### Fixed

@@ -1,1 +1,1 @@
-export const PCH_VERSION = '0.1.1';
+export const PCH_VERSION = '0.1.2';

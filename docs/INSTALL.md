@@ -33,7 +33,9 @@ In both cases iPads/laptops open `http(s)://<gateway-address>:8420`.
 4. Edit `.env` (see [Configure](#configure)).
 5. Start: `scripts\start.ps1`. Allow Node.js through Windows Defender Firewall on **Private** networks when prompted.
 
-To run at login, create a Task Scheduler task that runs `powershell -ExecutionPolicy Bypass -File C:\PCH\scripts\start.ps1` with "Start in" set to `C:\PCH`.
+**Without PowerShell (recommended for show computers):** double-click **Update Production Control Hub.cmd** once (and again after unzipping any new version), then double-click **Start Production Control Hub.cmd** to run PCH. It listens on the network automatically unless `.env` sets `PCH_HOST`. Close the window to stop PCH; held keys are released first. For a desktop icon: right-click the Start file → Show more options → Send to → Desktop (create shortcut). To start PCH at login: press Win+R, type `shell:startup`, paste that shortcut there, and set its Properties → Run to **Minimized**.
+
+Alternatively, to run at login without a window, create a Task Scheduler task that runs `powershell -ExecutionPolicy Bypass -File C:\PCH\scripts\start.ps1` with "Start in" set to `C:\PCH`.
 
 ### macOS
 
